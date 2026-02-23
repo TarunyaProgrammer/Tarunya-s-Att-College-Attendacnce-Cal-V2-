@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Tarunya's Att",
+  "version": "1.0",
+  "description": "Exclusively customized attendance analytics for Tarunya",
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "newtonSchool_16.png",
+      "48": "newtonSchool_48.png",
+      "128": "newtonSchool_128.png"
+    }
+  },
+  "icons": {
+    "16": "newtonSchool_16.png",
+    "48": "newtonSchool_48.png",
+    "128": "newtonSchool_128.png"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": ["storage", "scripting", "activeTab", "cookies"],
+  "host_permissions": ["*://*.newtonschool.co/*"]
+}
