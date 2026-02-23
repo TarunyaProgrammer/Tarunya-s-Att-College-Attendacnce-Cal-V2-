@@ -141,77 +141,93 @@ const ProgressRing = ({ percentage, color }) => {
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
 
-  return (
-    <div className="percentage-ring">
-      <svg width="80" height="80">
-        <circle
-          cx="40"
-          cy="40"
-          r={radius}
-          fill="transparent"
-          stroke="rgba(255,255,255,0.05)"
-          strokeWidth="6"
-        />
-        <motion.circle
-          cx="40"
-          cy="40"
-          r={radius}
-          fill="transparent"
-          stroke={color}
-          strokeWidth="6"
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset: offset }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          strokeLinecap="round"
-        />
-      </svg>
-      <div className="percentage-text" style={{ color }}>
-        {percentage}%
-      </div>
-    </div>
+  return React.createElement(
+    "div",
+    { className: "percentage-ring" },
+    React.createElement(
+      "svg",
+      { width: 80, height: 80 },
+      React.createElement("circle", {
+        cx: 40,
+        cy: 40,
+        r: radius,
+        fill: "transparent",
+        stroke: "rgba(255,255,255,0.05)",
+        strokeWidth: "6",
+      }),
+      React.createElement(motion.circle, {
+        cx: 40,
+        cy: 40,
+        r: radius,
+        fill: "transparent",
+        stroke: color,
+        strokeWidth: "6",
+        strokeDasharray: circumference,
+        initial: { strokeDashoffset: circumference },
+        animate: { strokeDashoffset: offset },
+        transition: { duration: 1.5, ease: "easeOut" },
+        strokeLinecap: "round",
+      }),
+    ),
+    React.createElement(
+      "div",
+      { className: "percentage-text", style: { color } },
+      `${percentage}%`,
+    ),
   );
 };
 
 const App = () => {
   const { data, loading, error } = useAttendance();
 
-  if (loading)
-    return (
-      <div
-        style={{
+  if (loading) {
+    return React.createElement(
+      "div",
+      {
+        style: {
           display: "flex",
           height: "100%",
           width: "100%",
           alignItems: "center",
           justifyContent: "center",
-        }}
-      >
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-          style={{
-            width: 40,
-            height: 40,
-            border: "4px solid rgba(255,255,255,0.1)",
-            borderTopColor: "#8b5cf6",
-            borderRadius: "50%",
-          }}
-        />
-      </div>
+        },
+      },
+      React.createElement(motion.div, {
+        animate: { rotate: 360 },
+        transition: { repeat: Infinity, duration: 1, ease: "linear" },
+        style: {
+          width: 40,
+          height: 40,
+          border: "4px solid rgba(255,255,255,0.1)",
+          borderTopColor: "#8b5cf6",
+          borderRadius: "50%",
+        },
+      }),
     );
+  }
 
-  if (error)
-    return (
-      <div
-        className="glass-panel"
-        style={{ padding: 40, textAlign: "center", margin: "auto" }}
-      >
-        <h3 style={{ fontSize: 24, marginBottom: 16 }}>Oops!</h3>
-        <p style={{ color: "#f87171", fontSize: 16 }}>{error}</p>
-        <button
-          onClick={() => window.location.reload()}
-          style={{
+  if (error) {
+    return React.createElement(
+      "div",
+      {
+        className: "glass-panel",
+        style: { padding: 40, textAlign: "center", margin: "auto" },
+      },
+      React.createElement(
+        "h3",
+        { style: { fontSize: 24, marginBottom: 16 } },
+        "Oops!",
+      ),
+      React.createElement(
+        "p",
+        { style: { color: "#f87171", fontSize: 16 } },
+        error,
+      ),
+      React.createElement(
+        "button",
+        {
+          onClick: () => window.location.reload(),
+          style: {
             marginTop: 24,
             padding: "12px 24px",
             borderRadius: 12,
@@ -220,112 +236,155 @@ const App = () => {
             color: "white",
             cursor: "pointer",
             fontWeight: 600,
-          }}
-        >
-          Retry
-        </button>
-      </div>
+          },
+        },
+        "Retry",
+      ),
     );
+  }
 
   const overallAttended = data.reduce((acc, curr) => acc + curr.attended, 0);
   const overallTotal = data.reduce((acc, curr) => acc + curr.total, 0);
   const overallPercentage =
     overallTotal > 0 ? Math.round((overallAttended / overallTotal) * 100) : 0;
 
-  return (
-    <>
-      <motion.header
-        className="header"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <div>
-          <h1 className="title">Tarunya's Att</h1>
-          <p className="credit">Crafted with ❤️ for Tarunya</p>
-        </div>
-        <div
-          className="glass-panel"
-          style={{
+  return React.createElement(
+    React.Fragment,
+    null,
+    React.createElement(
+      motion.header,
+      {
+        className: "header",
+        initial: { opacity: 0, y: -20 },
+        animate: { opacity: 1, y: 0 },
+      },
+      React.createElement(
+        "div",
+        null,
+        React.createElement("h1", { className: "title" }, "Tarunya's Att"),
+        React.createElement(
+          "p",
+          { className: "credit" },
+          "Crafted with ❤️ for Tarunya",
+        ),
+      ),
+      React.createElement(
+        "div",
+        {
+          className: "glass-panel",
+          style: {
             padding: "12px 20px",
             display: "flex",
             alignItems: "baseline",
             gap: 10,
-          }}
-        >
-          <span className="stat-label" style={{ fontSize: 13 }}>
-            Overall Progress
-          </span>
-          <span className="stat-value">{overallPercentage}%</span>
-        </div>
-      </motion.header>
+          },
+        },
+        React.createElement(
+          "span",
+          { className: "stat-label", style: { fontSize: 13 } },
+          "Overall Progress",
+        ),
+        React.createElement(
+          "span",
+          { className: "stat-value" },
+          `${overallPercentage}%`,
+        ),
+      ),
+    ),
 
-      <div className="dashboard-grid">
-        <AnimatePresence>
-          {data.map((item, index) => (
-            <motion.div
-              key={item.id}
-              className="glass-panel card"
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.4 }}
-            >
-              <div className="card-title">{item.name}</div>
-              <ProgressRing percentage={item.percentage} color={item.color} />
-              <div className="progress-info">
-                <div style={{ fontSize: 14, fontWeight: 500 }}>
-                  {item.attended} / {item.total} Attended
-                </div>
-                <div
-                  className={`status-badge status-${item.percentage >= 85 ? "excellent" : item.percentage >= 75 ? "good" : item.percentage >= 65 ? "average" : "poor"}`}
-                >
-                  {item.percentage >= 85
-                    ? "Excellent"
-                    : item.percentage >= 75
-                      ? "Good"
-                      : item.percentage >= 65
-                        ? "Average"
-                        : "Poor"}
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+    React.createElement(
+      "div",
+      { className: "dashboard-grid" },
+      React.createElement(
+        AnimatePresence,
+        null,
+        data.map((item, index) =>
+          React.createElement(
+            motion.div,
+            {
+              key: item.id,
+              className: "glass-panel card",
+              initial: { opacity: 0, scale: 0.9, y: 20 },
+              animate: { opacity: 1, scale: 1, y: 0 },
+              transition: { delay: index * 0.1, duration: 0.4 },
+            },
+            React.createElement("div", { className: "card-title" }, item.name),
+            React.createElement(ProgressRing, {
+              percentage: item.percentage,
+              color: item.color,
+            }),
+            React.createElement(
+              "div",
+              { className: "progress-info" },
+              React.createElement(
+                "div",
+                { style: { fontSize: 14, fontWeight: 500 } },
+                `${item.attended} / ${item.total} Attended`,
+              ),
+              React.createElement(
+                "div",
+                {
+                  className: `status-badge status-${item.percentage >= 85 ? "excellent" : item.percentage >= 75 ? "good" : item.percentage >= 65 ? "average" : "poor"}`,
+                },
+                item.percentage >= 85
+                  ? "Excellent"
+                  : item.percentage >= 75
+                    ? "Good"
+                    : item.percentage >= 65
+                      ? "Average"
+                      : "Poor",
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
 
-      <motion.footer
-        className="footer"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-      >
-        <div className="overall-stat">
-          <span className="stat-label">System Health</span>
-          <div
-            style={{
+    React.createElement(
+      motion.footer,
+      {
+        className: "footer",
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        transition: { delay: 0.5 },
+      },
+      React.createElement(
+        "div",
+        { className: "overall-stat" },
+        React.createElement(
+          "span",
+          { className: "stat-label" },
+          "System Health",
+        ),
+        React.createElement(
+          "div",
+          {
+            style: {
               width: 450,
               height: 10,
               background: "rgba(255,255,255,0.05)",
               borderRadius: 5,
               overflow: "hidden",
               border: "1px solid rgba(255,255,255,0.05)",
-            }}
-          >
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${overallPercentage}%` }}
-              transition={{ duration: 1.2, ease: "easeInOut" }}
-              style={{
-                height: "100%",
-                background: "linear-gradient(90deg, #8b5cf6, #3b82f6, #06b6d4)",
-              }}
-            />
-          </div>
-        </div>
-        <div className="stat-label" style={{ fontSize: 12, fontWeight: 600 }}>
-          {overallAttended} / {overallTotal} Total Classes
-        </div>
-      </motion.footer>
-    </>
+            },
+          },
+          React.createElement(motion.div, {
+            initial: { width: 0 },
+            animate: { width: `${overallPercentage}%` },
+            transition: { duration: 1.2, ease: "easeInOut" },
+            style: {
+              height: "100%",
+              background: "linear-gradient(90deg, #8b5cf6, #3b82f6, #06b6d4)",
+            },
+          }),
+        ),
+      ),
+      React.createElement(
+        "div",
+        { className: "stat-label", style: { fontSize: 12, fontWeight: 600 } },
+        `${overallAttended} / ${overallTotal} Total Lectures`,
+      ),
+    ),
   );
 };
 
